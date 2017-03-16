@@ -1,0 +1,43 @@
+Tag uses
+Layer uses (for collision, culling, and raycasting – essentially, what should be in what layer)
+GUI depths for layers (what should display over what)
+
+Project Setup
+	Google Ads
+	1. Set up AdMob account with google
+	2. Register your application
+	3. Create ads types (banner, video etc) on AdMob website
+	4. Download the Unity plugin for AdMob from "https://github.com/unity-plugins/Unity-Admob"
+	5. Open .ZIP file and double click on the package with Unity project open. It should automatically 
+	open in unity and import assets
+
+Scene setup
+	Screen Resolution setup - done for every scene
+	1a. GameObject -> Create Force Camera Ratio Object
+	1b. Set ratios for newly created object in the editor
+
+	Set up touch manager
+	1. Attach TouchManager script to global empty object called TouchManager in the first game scene
+	 - it will persist as a singleton
+
+	Camera setup for dynamic UI
+	1. Make render mode of canvas that houses menu "Screen Space - Camera"
+	2. Drag Main Camera onto "Render Camera" attribute in canvas editor
+
+	Scene Fading
+	1. Add the SceneFade script to any global object in the scene if you want a fadeIn effect when the scene is loaded
+	2. Attach a black image to the texture in the editor and set the fadeSpeed to an input from 0-1
+
+	Loader for Start-up Scene
+	1. Attach Load script to a gloabal object (Main Camera Usually)
+
+	Ads by Google
+	1. Add the AdManager script to a global empty object called AdManager in the first scene - it will persist as a singleton
+	2. Call AdManager.Instance.ShowBanner(); in the scene you want banners
+	3. Call AdManager.Instance.ShowVideo(); if you want a video ad played
+
+
+Prefab structure of complicated prefabs
+Idiom preferences
+Build setup
+Namespaces
