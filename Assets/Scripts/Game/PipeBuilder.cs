@@ -8,10 +8,13 @@ public class PipeBuilder : MonoBehaviour {
 
     int NUM_PIPES = 10; // The number of pipes to exist on screeen at a given time.
 
-    float pipeLength;
+    public static float pipeLength;
+    public static float pipeRadius;
 
     void Start() {
-        pipeLength = pipeSegment.GetComponent<Renderer>().bounds.size.z;
+        Renderer renderer = pipeSegment.GetComponent<Renderer>();
+        pipeLength = renderer.bounds.size.z;
+        pipeRadius = renderer.bounds.extents.x;
 
         for (int i = 0; i < NUM_PIPES; i++) {
             createPipe(new Vector3(0, 0, pipeLength * (i + 0.5f)));
