@@ -7,6 +7,7 @@ TagManager:
   - PipeSegment
   - PipeBuilder
   - GameManager
+  - Bubble
   layers:
   - Default
   - TransparentFX

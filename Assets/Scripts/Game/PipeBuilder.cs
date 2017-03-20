@@ -5,6 +5,7 @@ public class PipeBuilder : MonoBehaviour {
     // This script is not meant to be attached to any specific object, but should be attached to a global persistent object.
 
     public GameObject pipeSegment;
+    public Transform pipe;
 
     int NUM_PIPES = 10; // The number of pipes to exist on screeen at a given time.
 
@@ -22,7 +23,8 @@ public class PipeBuilder : MonoBehaviour {
     }
 
     void createPipe(Vector3 position) {
-        Instantiate(pipeSegment, position, Quaternion.identity);
+        GameObject p = Instantiate(pipeSegment, position, Quaternion.identity) as GameObject;
+        p.transform.parent = pipe;
     }
 
     // Triggered by a destroyed pipe. Creates a new pipe to replace it.

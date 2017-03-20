@@ -5,6 +5,7 @@ using UnityEngine;
 public class BubbleSpawner : MonoBehaviour {
 
     public GameObject bubble;
+    public Transform bubbleJar;
 
     float xMin;
     float xMax;
@@ -12,7 +13,7 @@ public class BubbleSpawner : MonoBehaviour {
     float yMax;
     float zPos;
 
-    float spawnRate = 0.5f; // delay between bubbles spawns
+    float spawnRate = 0.3f; // delay between bubbles spawns
     float nextSpawn = 0;
 
 	void Start () {
@@ -36,6 +37,7 @@ public class BubbleSpawner : MonoBehaviour {
     void spawnBubble() {
         Vector3 position = new Vector3(Random.Range(xMin, xMax), Random.Range(yMin, yMax), zPos);
 
-        Instantiate(bubble, position, Quaternion.identity);
+        GameObject b = (GameObject)Instantiate(bubble, position, Quaternion.identity);
+        b.transform.parent = bubbleJar;
     }
 }
