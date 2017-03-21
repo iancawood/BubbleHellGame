@@ -88,20 +88,20 @@ AudioSource:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1610245601287536}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 7b7b8ee2a70e18544a4f4ea863d41ae2, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 2
-  MinDistance: 0.5
+  MinDistance: 0.3
   MaxDistance: 3
   Pan2D: 0
   rolloffMode: 0
@@ -112,22 +112,34 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 2
-      time: 0.25
+      time: 0.1
       value: 1
-      inSlope: -4.0016
-      outSlope: -4.0016
+      inSlope: -10.0039835
+      outSlope: -10.0039835
       tangentMode: 0
     - serializedVersion: 2
-      time: 0.48039216
-      value: 0.26842102
-      inSlope: -1.0004
-      outSlope: -1.0004
+      time: 0.2
+      value: 0.5
+      inSlope: -2.5009959
+      outSlope: -2.5009959
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.4
+      value: 0.25
+      inSlope: -0.62524897
+      outSlope: -0.62524897
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.79019606
+      value: 0.08157894
+      inSlope: -0.15631224
+      outSlope: -0.15631224
       tangentMode: 0
     - serializedVersion: 2
       time: 1
-      value: 0.011184201
-      inSlope: -0.2501
-      outSlope: -0.2501
+      value: 0.020394735
+      inSlope: -0.10003988
+      outSlope: -0.10003988
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
