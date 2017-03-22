@@ -7,22 +7,43 @@ public class BubbleSpawner : MonoBehaviour {
     public GameObject bubble;
     public Transform bubbleJar;
 
-    float xMin;
-    float xMax;
-    float yMin;
-    float yMax;
-    float zPos;
+    float spawnerZPos;
 
     float spawnRate = 0.3f; // delay between bubbles spawns
     float nextSpawn = 0;
 
+    class Range {
+        public float min;
+        public float max;
+
+        public Range() {
+            min = 0;
+            max = 10;
+        }
+
+        public Range(float minimum, float maximum) {
+            min = minimum;
+            max = maximum;
+        }
+    }
+
+    Range speedRange;
+    Range typeRange;
+    Range spawnerXRange;
+    Range spawnerYRange;
+    Range pipeRange;
+
 	void Start () {
         Collider collider = this.GetComponent<Collider>();
-        xMin = collider.bounds.min.x;
-        xMax = collider.bounds.max.x;
-        yMin = collider.bounds.min.y;
-        yMax = collider.bounds.max.y;
-        zPos = collider.bounds.center.z;
+
+        spawnerZPos = collider.bounds.center.z;
+        spawnerXRange = new Range(collider.bounds.min.x, collider.bounds.max.x);
+        spawnerYRange = new Range(collider.bounds.min.y, collider.bounds.max.y);
+
+        speedRange = new Range(5, 25);
+        typeRange = new Range(1, 6);
+
+        pipeRange = new Range(0, PipeBuilder.pipeRadius);
     }
 
 	void Update () {
@@ -35,9 +56,44 @@ public class BubbleSpawner : MonoBehaviour {
     }
 
     void spawnBubble() {
-        Vector3 position = new Vector3(Random.Range(xMin, xMax), Random.Range(yMin, yMax), zPos);
+        Vector3 position = selectPosition();
 
         GameObject b = (GameObject)Instantiate(bubble, position, Quaternion.identity);
         b.transform.parent = bubbleJar;
+
+        Bubble bubbleScript = b.GetComponent<Bubble>();
+
+        bubbleScript.speed = selectSpeed();
+    }
+
+    Vector3 selectPosition() {
+        // need to be within bounds of pipe
+
+        return new Vector3(Random.Range(spawnerXRange.min, spawnerXRange.max), Random.Range(spawnerYRange.min, spawnerYRange.max), spawnerZPos);
+    }
+
+    int selectBubbleType() {
+        int type = 1;
+
+        float rand1 = Random.Range(typeRange.min, typeRange.max);
+        float rand2 = Random.Range(typeRange.min, typeRange.max);
+
+        float randSum = rand1 + rand2;
+
+        // need some sort of mapping from randSum to different things
+
+        return type;
+    }
+
+    float selectSpeed() {
+        return Random.Range(speedRange.min, speedRange.max);
+    }
+
+    void increaseDifficulty(int level) {
+        // increase speed as a function of the level
+
+        // also, reallange the configuration of the type map
+
+        // also, increase spawn rate
     }
 }

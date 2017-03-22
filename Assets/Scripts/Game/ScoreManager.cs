@@ -8,12 +8,13 @@ public class ScoreManager : MonoBehaviour {
     public Text highScoreText;
 
     int nextLevelUp;
+    int currentLevel = 1;
 
     int LEVEL_UP = 10; // Amount of seconds between each level change
     string PIPE_BUILDER_TAG = "PipeBuilder";
 
     void Start() {
-        nextLevelUp = LEVEL_UP;
+        reset();
     }
 
     void Update() {
@@ -34,12 +35,15 @@ public class ScoreManager : MonoBehaviour {
 
     void reset() {
         nextLevelUp = LEVEL_UP;
+        currentLevel = 1;
     }
 
     void levelUp() {
         Debug.Log("Level up!");
 
         nextLevelUp += LEVEL_UP;
+        currentLevel++;
+
         GameObject.FindGameObjectWithTag(PIPE_BUILDER_TAG).SendMessage("changeTheme");
     }
 }
