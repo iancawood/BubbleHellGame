@@ -5,10 +5,15 @@ using UnityEngine;
 public class Bubble : MonoBehaviour {
 
     const float DEATH_ZONE = -10f; // Where the bubbles despawn, should be negative
-    const int SIMPLE_BUBBLE = 0;
-    const int SINE_BUBBLE = 1;
-    const int DOUBLE_SINE_BUBBLE = 2;
-    const int HOMING_BUBBLE = 3;
+
+    public const int SIMPLE_BUBBLE = 0;
+    public const int SINE_BUBBLE = 1;
+    public const int DOUBLE_SINE_BUBBLE = 2;
+    public const int HOMING_BUBBLE = 3;
+
+    public const int SIMPLE_CLUSTER = 4;
+    public const int HELIX_CLUSTER = 5;
+    public const int EXPANDING_CLUSTER = 5;
 
     public float speed = 15f;
 
