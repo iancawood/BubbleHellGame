@@ -9,10 +9,16 @@ public class BubbleSpawner : MonoBehaviour {
 
     float spawnerZPos;
 
-    float spawnRate = 0.3f; // delay between bubbles spawns
+    float spawnRate = 0.7f; // delay between bubbles spawns
     float nextSpawn = 0;
 
     const float PIPE_THICKNESS = 2f;
+
+    const float SPEED_MULTIPLIER = 0.5f;
+    const float SPAWN_MULTIPLIER = 0.05f;
+    const float MAX_SPAWN_RATE = 0.05f;
+
+    const int NUM_DICE = 3;
 
     class Range {
         public float min;
@@ -98,10 +104,13 @@ public class BubbleSpawner : MonoBehaviour {
     }
 
     void increaseDifficulty(int level) {
-        // increase speed as a function of the level
+        speedRange.min += SPEED_MULTIPLIER;
+        speedRange.max += SPEED_MULTIPLIER;
 
-        // also, reallange the configuration of the type map
+        if ((spawnRate - SPAWN_MULTIPLIER) >= MAX_SPAWN_RATE) {
+            spawnRate -= SPAWN_MULTIPLIER;
+        }
 
-        // also, increase spawn rate
+        // also, rearrange the configuration of the type map
     }
 }
