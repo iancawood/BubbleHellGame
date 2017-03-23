@@ -12,6 +12,8 @@ public class BubbleSpawner : MonoBehaviour {
     float spawnRate = 0.3f; // delay between bubbles spawns
     float nextSpawn = 0;
 
+    const float PIPE_THICKNESS = 2f;
+
     class Range {
         public float min;
         public float max;
@@ -67,9 +69,15 @@ public class BubbleSpawner : MonoBehaviour {
     }
 
     Vector3 selectPosition() {
-        // need to be within bounds of pipe
+        float x = 0;
+        float y = 0;
 
-        return new Vector3(Random.Range(spawnerXRange.min, spawnerXRange.max), Random.Range(spawnerYRange.min, spawnerYRange.max), spawnerZPos);
+        do {
+            x = Random.Range(-pipeRange.max + PIPE_THICKNESS, pipeRange.max - PIPE_THICKNESS);
+            y = Random.Range(-pipeRange.max + PIPE_THICKNESS, pipeRange.max - PIPE_THICKNESS);
+        } while ((Mathf.Pow(x, 2) + Mathf.Pow(y, 2)) >= Mathf.Pow(pipeRange.max, 2));
+
+        return new Vector3(x, y, spawnerZPos);
     }
 
     int selectBubbleType() {
