@@ -18,8 +18,6 @@ public class BubbleSpawner : MonoBehaviour {
     const float SPAWN_MULTIPLIER = 0.05f;
     const float MAX_SPAWN_RATE = 0.05f;
 
-    const int NUM_DICE = 2;
-
     class Range {
         public float min;
         public float max;
@@ -42,8 +40,15 @@ public class BubbleSpawner : MonoBehaviour {
     Range pipeRange;
 
     Dictionary<int, int> typeMapping = new Dictionary<int, int>();
+    int numDice = 3;
+    int currentType = 0;
+    int[] spawnableTypes = {
+        Bubble.SIMPLE_BUBBLE,
+        Bubble.SINE_BUBBLE,
+        Bubble.DOUBLE_SINE_BUBBLE
+    };
 
-	void Start () {
+    void Start () {
         Collider collider = this.GetComponent<Collider>();
 
         spawnerZPos = collider.bounds.center.z;
@@ -54,26 +59,9 @@ public class BubbleSpawner : MonoBehaviour {
         typeRange = new Range(1, 6);
         pipeRange = new Range(0, PipeBuilder.pipeRadius);
 
+        populateMapping();
 
-        int minRoll = NUM_DICE * (int)typeRange.min;
-        int maxRoll = NUM_DICE * (int)typeRange.max;
-
-        for (int i = minRoll; i < maxRoll; i++) {
-            switch(i%4) {
-                case 0:
-                    typeMapping.Add(i, Bubble.SIMPLE_BUBBLE);
-                    break;
-                case 1:
-                    typeMapping.Add(i, Bubble.SINE_BUBBLE);
-                    break;
-                case 2:
-                    typeMapping.Add(i, Bubble.DOUBLE_SINE_BUBBLE);
-                    break;
-                case 3:
-                    typeMapping.Add(i, Bubble.HOMING_BUBBLE);
-                    break;
-            }
-        }
+        Debug.Log(typeMapping);
     }
 
 	void Update () {
@@ -111,7 +99,7 @@ public class BubbleSpawner : MonoBehaviour {
     int selectBubbleType() {
         int outcome = 0;
 
-        for (int i = 0; i < NUM_DICE; i++) {
+        for (int i = 0; i < numDice; i++) {
             outcome += Random.Range((int)typeRange.min, (int)typeRange.max);
         }
 
@@ -134,6 +122,37 @@ public class BubbleSpawner : MonoBehaviour {
     }
 
     void populateMapping() {
+        // reset some stuff
+        typeMapping = new Dictionary<int, int>();
+        currentType = 0;
 
+        // prep useful variables
+        int minRoll = numDice * (int)typeRange.min;
+        int maxRoll = numDice * (int)typeRange.max;
+        int numOutcomes = maxRoll - minRoll + 1;
+        int numIterations = (int)Mathf.Ceil(numOutcomes / 2.0f);
+        int midPoint = (maxRoll + minRoll) / 2;
+
+        // iterate from the middle of the mapping outward
+        for (int i = 0; i <= numIterations; i++) {
+            if (i == 0) {
+                addTypeMapping(midPoint);
+            } else {
+                if (midPoint + i <= maxRoll) {
+                    addTypeMapping(midPoint + i);
+                }
+                if (midPoint - i >= minRoll) {
+                    addTypeMapping(midPoint - i);
+                }
+            }
+        }
+    }
+
+    void addTypeMapping(int index) {
+        if (currentType >= spawnableTypes.Length) {
+            currentType = 0;
+        }
+
+        typeMapping.Add(index, spawnableTypes[currentType++]);
     }
 }
