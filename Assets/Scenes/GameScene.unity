@@ -337,7 +337,7 @@ GameObject:
   - component: {fileID: 762357087}
   m_Layer: 0
   m_Name: BubbleSpawner
-  m_TagString: Bubble
+  m_TagString: BubbleSpawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

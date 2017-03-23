@@ -112,8 +112,8 @@ public class BubbleSpawner : MonoBehaviour {
         int outcome = 0;
 
         for (int i = 0; i < NUM_DICE; i++) {
-            outcome = Random.Range((int)typeRange.min, (int)typeRange.max);
-        }       
+            outcome += Random.Range((int)typeRange.min, (int)typeRange.max);
+        }
 
         return typeMapping[outcome];
     }
