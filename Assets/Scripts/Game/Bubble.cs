@@ -16,8 +16,7 @@ public class Bubble : MonoBehaviour {
     public const int EXPANDING_CLUSTER = 5;
 
     public float speed = 15f;
-
-    int type = SIMPLE_BUBBLE;
+    public int type = SIMPLE_BUBBLE;
 
     void Start ()
     {

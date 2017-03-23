@@ -18,7 +18,7 @@ public class BubbleSpawner : MonoBehaviour {
     const float SPAWN_MULTIPLIER = 0.05f;
     const float MAX_SPAWN_RATE = 0.05f;
 
-    const int NUM_DICE = 3;
+    const int NUM_DICE = 2;
 
     class Range {
         public float min;
@@ -41,6 +41,8 @@ public class BubbleSpawner : MonoBehaviour {
     Range spawnerYRange;
     Range pipeRange;
 
+    Dictionary<int, int> typeMapping = new Dictionary<int, int>();
+
 	void Start () {
         Collider collider = this.GetComponent<Collider>();
 
@@ -50,8 +52,28 @@ public class BubbleSpawner : MonoBehaviour {
 
         speedRange = new Range(5, 25);
         typeRange = new Range(1, 6);
-
         pipeRange = new Range(0, PipeBuilder.pipeRadius);
+
+
+        int minRoll = NUM_DICE * (int)typeRange.min;
+        int maxRoll = NUM_DICE * (int)typeRange.max;
+
+        for (int i = minRoll; i < maxRoll; i++) {
+            switch(i%4) {
+                case 0:
+                    typeMapping.Add(i, Bubble.SIMPLE_BUBBLE);
+                    break;
+                case 1:
+                    typeMapping.Add(i, Bubble.SINE_BUBBLE);
+                    break;
+                case 2:
+                    typeMapping.Add(i, Bubble.DOUBLE_SINE_BUBBLE);
+                    break;
+                case 3:
+                    typeMapping.Add(i, Bubble.HOMING_BUBBLE);
+                    break;
+            }
+        }
     }
 
 	void Update () {
@@ -70,8 +92,8 @@ public class BubbleSpawner : MonoBehaviour {
         b.transform.parent = bubbleJar;
 
         Bubble bubbleScript = b.GetComponent<Bubble>();
-
         bubbleScript.speed = selectSpeed();
+        bubbleScript.type = selectBubbleType();
     }
 
     Vector3 selectPosition() {
@@ -87,16 +109,13 @@ public class BubbleSpawner : MonoBehaviour {
     }
 
     int selectBubbleType() {
-        int type = 1;
+        int outcome = 0;
 
-        float rand1 = Random.Range(typeRange.min, typeRange.max);
-        float rand2 = Random.Range(typeRange.min, typeRange.max);
+        for (int i = 0; i < NUM_DICE; i++) {
+            outcome = Random.Range((int)typeRange.min, (int)typeRange.max);
+        }       
 
-        float randSum = rand1 + rand2;
-
-        // need some sort of mapping from randSum to different things
-
-        return type;
+        return typeMapping[outcome];
     }
 
     float selectSpeed() {
@@ -112,5 +131,9 @@ public class BubbleSpawner : MonoBehaviour {
         }
 
         // also, rearrange the configuration of the type map
+    }
+
+    void populateMapping() {
+
     }
 }
