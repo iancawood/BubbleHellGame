@@ -6,6 +6,11 @@ public class BubbleSpawner : MonoBehaviour {
 
     public GameObject bubble;
     public Transform bubbleJar;
+    public int initialMinSpeed = 5;
+    public int initialMaxSpeed = 25;
+    public int lowDiceValue = 1;
+    public int highDiceValue = 6;
+    public int numDice = 2;
 
     float spawnerZPos;
 
@@ -40,13 +45,8 @@ public class BubbleSpawner : MonoBehaviour {
     Range pipeRange;
 
     Dictionary<int, int> typeMapping = new Dictionary<int, int>();
-    int numDice = 3;
     int currentType = 0;
-    int[] spawnableTypes = {
-        Bubble.SIMPLE_BUBBLE,
-        Bubble.SINE_BUBBLE,
-        Bubble.DOUBLE_SINE_BUBBLE
-    };
+    List<int> spawnableTypes = new List<int>();
 
     void Start () {
         Collider collider = this.GetComponent<Collider>();
@@ -55,13 +55,11 @@ public class BubbleSpawner : MonoBehaviour {
         spawnerXRange = new Range(collider.bounds.min.x, collider.bounds.max.x);
         spawnerYRange = new Range(collider.bounds.min.y, collider.bounds.max.y);
 
-        speedRange = new Range(5, 25);
-        typeRange = new Range(1, 6);
+        speedRange = new Range(initialMinSpeed, initialMaxSpeed);
+        typeRange = new Range(lowDiceValue, highDiceValue);
         pipeRange = new Range(0, PipeBuilder.pipeRadius);
 
-        populateMapping();
-
-        Debug.Log(typeMapping);
+        reset();
     }
 
 	void Update () {
@@ -71,6 +69,12 @@ public class BubbleSpawner : MonoBehaviour {
             nextSpawn = spawnRate;
             spawnBubble();
         }
+    }
+
+    void reset() {
+        spawnableTypes = new List<int>();
+        chooseSpawnableTypes(1);
+        populateMapping();
     }
 
     void spawnBubble() {
@@ -118,6 +122,7 @@ public class BubbleSpawner : MonoBehaviour {
             spawnRate -= SPAWN_MULTIPLIER;
         }
 
+        chooseSpawnableTypes(level);
         // also, rearrange the configuration of the type map
     }
 
@@ -149,10 +154,36 @@ public class BubbleSpawner : MonoBehaviour {
     }
 
     void addTypeMapping(int index) {
-        if (currentType >= spawnableTypes.Length) {
+        if (currentType >= spawnableTypes.Count) {
             currentType = 0;
         }
 
         typeMapping.Add(index, spawnableTypes[currentType++]);
+    }
+
+    // Change the switch case in the function to configure what level different bubbles types are added
+    void chooseSpawnableTypes(int level) {
+        int oldSize = spawnableTypes.Count;
+
+        switch(level) {
+            case 1:
+                spawnableTypes.Add(Bubble.SIMPLE_BUBBLE);
+                spawnableTypes.Add(Bubble.SINE_BUBBLE);
+                break;
+            case 6:
+                spawnableTypes.Add(Bubble.DOUBLE_SINE_BUBBLE);
+                break;
+            case 11:
+                spawnableTypes.Add(Bubble.HOMING_BUBBLE);
+                break;
+            case 16:
+                break;
+            default:
+                break;
+        }
+
+        if (spawnableTypes.Count > oldSize) {
+            populateMapping();
+        }
     }
 }

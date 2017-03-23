@@ -420,6 +420,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bubble: {fileID: 1610245601287536, guid: 59bf28056fe85634c80898eb64d54e5e, type: 2}
   bubbleJar: {fileID: 1468639691}
+  initialMinSpeed: 5
+  initialMaxSpeed: 25
+  lowDiceValue: 1
+  highDiceValue: 6
+  numDice: 2
 --- !u!1 &810596463
 GameObject:
   m_ObjectHideFlags: 0
