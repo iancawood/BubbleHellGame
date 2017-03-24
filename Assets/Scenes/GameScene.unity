@@ -422,6 +422,10 @@ MonoBehaviour:
   bubbleJar: {fileID: 1468639691}
   initialMinSpeed: 5
   initialMaxSpeed: 25
+  speedIncrement: 0.5
+  spawnRate: 0.7
+  maxSpawnRate: 0.05
+  spawnRateIncrement: 0.05
   lowDiceValue: 1
   highDiceValue: 6
   numDice: 2

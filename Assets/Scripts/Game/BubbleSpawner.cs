@@ -8,20 +8,20 @@ public class BubbleSpawner : MonoBehaviour {
     public Transform bubbleJar;
     public int initialMinSpeed = 5;
     public int initialMaxSpeed = 25;
+    public float speedIncrement = 0.5f;
+    public float spawnRate = 0.7f; // delay between bubbles spawns
+    public float maxSpawnRate = 0.05f;
+    public float spawnRateIncrement = 0.05f;
     public int lowDiceValue = 1;
     public int highDiceValue = 6;
     public int numDice = 2;
 
     float spawnerZPos;
 
-    float spawnRate = 0.7f; // delay between bubbles spawns
+
     float nextSpawn = 0;
 
     const float PIPE_THICKNESS = 2f;
-
-    const float SPEED_MULTIPLIER = 0.5f;
-    const float SPAWN_MULTIPLIER = 0.05f;
-    const float MAX_SPAWN_RATE = 0.05f;
 
     class Range {
         public float min;
@@ -132,11 +132,11 @@ public class BubbleSpawner : MonoBehaviour {
     }
 
     void increaseDifficulty(int level) {
-        speedRange.min += SPEED_MULTIPLIER;
-        speedRange.max += SPEED_MULTIPLIER;
+        speedRange.min += speedIncrement;
+        speedRange.max += speedIncrement;
 
-        if ((spawnRate - SPAWN_MULTIPLIER) >= MAX_SPAWN_RATE) {
-            spawnRate -= SPAWN_MULTIPLIER;
+        if ((spawnRate - spawnRateIncrement) >= maxSpawnRate) {
+            spawnRate -= spawnRateIncrement;
         }
 
         chooseSpawnableTypes(level);
