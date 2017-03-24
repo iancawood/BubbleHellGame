@@ -79,13 +79,30 @@ public class BubbleSpawner : MonoBehaviour {
 
     void spawnBubble() {
         Vector3 position = selectPosition();
+        float speed = selectSpeed();
+        int type = selectBubbleType();
 
-        GameObject b = (GameObject)Instantiate(bubble, position, Quaternion.identity);
+        if (type == Bubble.SIMPLE_BUBBLE || type == Bubble.SINE_BUBBLE || type == Bubble.DOUBLE_SINE_BUBBLE || type == Bubble.HOMING_BUBBLE) {
+            instantiateBubble(position, speed, type, Quaternion.identity);
+        }
+        else if (type == Bubble.SIMPLE_CLUSTER) {
+            spawnSimpleCluster(position, speed);
+        }
+        else if (type == Bubble.HELIX_CLUSTER) {
+            spawnHelixCluster(position, speed);
+        } 
+        else if (type == Bubble.EXPANDING_CLUSTER) {
+            spawnExpandingCluster(position, speed);
+        }
+    }
+
+    void instantiateBubble(Vector3 position, float speed, int type, Quaternion rotation) {
+        GameObject b = (GameObject)Instantiate(bubble, position, rotation);
         b.transform.parent = bubbleJar;
 
         Bubble bubbleScript = b.GetComponent<Bubble>();
-        bubbleScript.speed = selectSpeed();
-        bubbleScript.type = selectBubbleType();
+        bubbleScript.speed = speed;
+        bubbleScript.type = type;
     }
 
     Vector3 selectPosition() {
@@ -123,7 +140,8 @@ public class BubbleSpawner : MonoBehaviour {
         }
 
         chooseSpawnableTypes(level);
-        // also, rearrange the configuration of the type map
+
+        shuffleTypeMapping();
     }
 
     void populateMapping() {
@@ -169,6 +187,7 @@ public class BubbleSpawner : MonoBehaviour {
             case 1:
                 spawnableTypes.Add(Bubble.SIMPLE_BUBBLE);
                 spawnableTypes.Add(Bubble.SINE_BUBBLE);
+                spawnableTypes.Add(Bubble.SIMPLE_CLUSTER);
                 break;
             case 6:
                 spawnableTypes.Add(Bubble.DOUBLE_SINE_BUBBLE);
@@ -185,5 +204,24 @@ public class BubbleSpawner : MonoBehaviour {
         if (spawnableTypes.Count > oldSize) {
             populateMapping();
         }
+    }
+
+    void shuffleTypeMapping() {
+
+    }
+
+    void spawnSimpleCluster(Vector3 center, float speed) {
+        instantiateBubble(center + new Vector3(-1, 0, 0), speed, Bubble.SIMPLE_BUBBLE, Quaternion.identity);
+        instantiateBubble(center + new Vector3(1, 0, 0), speed, Bubble.SIMPLE_BUBBLE, Quaternion.identity);
+        instantiateBubble(center + new Vector3(0, -1, 0), speed, Bubble.SIMPLE_BUBBLE, Quaternion.identity);
+        instantiateBubble(center + new Vector3(0, 1, 0), speed, Bubble.SIMPLE_BUBBLE, Quaternion.identity);
+    }
+
+    void spawnHelixCluster(Vector3 center, float speed) {
+
+    }
+
+    void spawnExpandingCluster(Vector3 center, float speed) {
+
     }
 }
