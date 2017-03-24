@@ -70,12 +70,14 @@ public class BubbleSpawner : MonoBehaviour {
         }
     }
 
+    // Reset bubble spawner to initial state
     void reset() {
         spawnableTypes = new List<int>();
         chooseSpawnableTypes(1);
         populateMapping();
     }
 
+    // Chooses the properties of a bubble or bubble cluster and then spawns it
     void spawnBubble() {
         Vector3 position = selectPosition();
         float speed = selectSpeed();
@@ -95,15 +97,20 @@ public class BubbleSpawner : MonoBehaviour {
         }
     }
 
-    void instantiateBubble(Vector3 position, float speed, int type, Quaternion rotation) {
+    // Instantiates a bubble game object
+    GameObject instantiateBubble(Vector3 position, float speed, int type, Quaternion rotation) {
         GameObject b = (GameObject)Instantiate(bubble, position, rotation);
         b.transform.parent = bubbleJar;
 
         Bubble bubbleScript = b.GetComponent<Bubble>();
         bubbleScript.speed = speed;
         bubbleScript.type = type;
+
+        return b;
     }
 
+    // Randomly determines the position of a bubble
+    // Must be within the bounds of the pipe
     Vector3 selectPosition() {
         float x = 0;
         float y = 0;
@@ -116,6 +123,7 @@ public class BubbleSpawner : MonoBehaviour {
         return new Vector3(x, y, spawnerZPos);
     }
 
+    // Selects the type of the bubble by rolling a set of dice and looking up the outcome
     int selectBubbleType() {
         int outcome = 0;
 
@@ -126,10 +134,12 @@ public class BubbleSpawner : MonoBehaviour {
         return typeMapping[outcome];
     }
 
+    // Randomly determine speed of bubble
     float selectSpeed() {
         return Random.Range(speedRange.min, speedRange.max);
     }
 
+    // Called upon the level increasing and increase the difficulty of the bubbles spawned
     void increaseDifficulty(int level) {
         speedRange.min += speedIncrement;
         speedRange.max += speedIncrement;
@@ -143,6 +153,7 @@ public class BubbleSpawner : MonoBehaviour {
         shuffleTypeMapping();
     }
 
+    // Fills the type mapping but starting in the middle and moving outward
     void populateMapping() {
         // reset some stuff
         typeMapping = new Dictionary<int, int>();
@@ -170,6 +181,7 @@ public class BubbleSpawner : MonoBehaviour {
         }
     }
 
+    // Adds an entry into the type mapping
     void addTypeMapping(int index) {
         if (currentType >= spawnableTypes.Count) {
             currentType = 0;
@@ -178,6 +190,7 @@ public class BubbleSpawner : MonoBehaviour {
         typeMapping.Add(index, spawnableTypes[currentType++]);
     }
 
+    // Determines what bubbles will exist at each level.
     // Change the switch case in the function to configure what level different bubbles types are added
     void chooseSpawnableTypes(int level) {
         int oldSize = spawnableTypes.Count;
@@ -203,10 +216,12 @@ public class BubbleSpawner : MonoBehaviour {
         }
     }
 
+    // Shuffles the indices in the type mapping to increase chance of harder bubbles spawning
     void shuffleTypeMapping() {
 
     }
 
+    // Spawns 4 simple bubbles in a diamond shaped cluster
     void spawnSimpleCluster(Vector3 center, float speed) {
         instantiateBubble(center + new Vector3(-1, 0, 0), speed, Bubble.SIMPLE_BUBBLE, Quaternion.identity);
         instantiateBubble(center + new Vector3(1, 0, 0), speed, Bubble.SIMPLE_BUBBLE, Quaternion.identity);
@@ -214,14 +229,16 @@ public class BubbleSpawner : MonoBehaviour {
         instantiateBubble(center + new Vector3(0, 1, 0), speed, Bubble.SIMPLE_BUBBLE, Quaternion.identity);
     }
 
+    // Spawns double sine bubbles in a helix formation
     void spawnHelixCluster(Vector3 center, float speed) {
         instantiateBubble(center + new Vector3(0, 0.5f, 0), speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
         instantiateBubble(center + new Vector3(0, -0.5f, 0), speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
     }
 
+    // Spawns sine bubbles at different rotations so they expand and contract on the same point
     void spawnExpandingCluster(Vector3 center, float speed) {
-        instantiateBubble(center + new Vector3(0, 0, 0), speed, Bubble.SINE_BUBBLE, Quaternion.identity);
-        instantiateBubble(center + new Vector3(0, 0, 0), speed, Bubble.SINE_BUBBLE, Quaternion.Euler(0, 0, 120));
-        instantiateBubble(center + new Vector3(0, 0, 0), speed, Bubble.SINE_BUBBLE, Quaternion.Euler(0, 0, 240));
+        instantiateBubble(center, speed, Bubble.SINE_BUBBLE, Quaternion.identity);
+        instantiateBubble(center, speed, Bubble.SINE_BUBBLE, Quaternion.Euler(0, 0, 120));
+        instantiateBubble(center, speed, Bubble.SINE_BUBBLE, Quaternion.Euler(0, 0, 240));
     }
 }
