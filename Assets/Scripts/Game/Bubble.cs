@@ -13,7 +13,7 @@ public class Bubble : MonoBehaviour {
 
     public const int SIMPLE_CLUSTER = 4;
     public const int HELIX_CLUSTER = 5;
-    public const int EXPANDING_CLUSTER = 5;
+    public const int EXPANDING_CLUSTER = 6;
 
     public float speed = 15f;
     public int type = SIMPLE_BUBBLE;
@@ -45,7 +45,7 @@ public class Bubble : MonoBehaviour {
         }
         else if (type == SINE_BUBBLE) {
             transform.position += (Vector3.back * Time.deltaTime * speed);
-            transform.position += (Vector3.up * Mathf.Sin (Time.time * 8.0f) * 0.25f);
+            transform.position += (transform.up * Mathf.Sin (Time.time * 8.0f) * 0.25f);
         }
         else if (type == DOUBLE_SINE_BUBBLE) {
             transform.position += (Vector3.back * Time.deltaTime * speed);

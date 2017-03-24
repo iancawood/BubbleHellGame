@@ -9,7 +9,7 @@ public class BubbleSpawner : MonoBehaviour {
     public int initialMinSpeed = 5;
     public int initialMaxSpeed = 25;
     public float speedIncrement = 0.5f;
-    public float spawnRate = 0.7f; // delay between bubbles spawns
+    public float spawnRate = 3f; // delay between bubbles spawns
     public float maxSpawnRate = 0.05f;
     public float spawnRateIncrement = 0.05f;
     public int lowDiceValue = 1;
@@ -17,7 +17,6 @@ public class BubbleSpawner : MonoBehaviour {
     public int numDice = 2;
 
     float spawnerZPos;
-
 
     float nextSpawn = 0;
 
@@ -185,12 +184,10 @@ public class BubbleSpawner : MonoBehaviour {
 
         switch(level) {
             case 1:
-                spawnableTypes.Add(Bubble.SIMPLE_BUBBLE);
-                spawnableTypes.Add(Bubble.SINE_BUBBLE);
-                spawnableTypes.Add(Bubble.SIMPLE_CLUSTER);
+                spawnableTypes.Add(Bubble.EXPANDING_CLUSTER);
                 break;
             case 6:
-                spawnableTypes.Add(Bubble.DOUBLE_SINE_BUBBLE);
+                spawnableTypes.Add(Bubble.SIMPLE_BUBBLE);
                 break;
             case 11:
                 spawnableTypes.Add(Bubble.HOMING_BUBBLE);
@@ -218,10 +215,13 @@ public class BubbleSpawner : MonoBehaviour {
     }
 
     void spawnHelixCluster(Vector3 center, float speed) {
-
+        instantiateBubble(center + new Vector3(0, 0.5f, 0), speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
+        instantiateBubble(center + new Vector3(0, -0.5f, 0), speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
     }
 
     void spawnExpandingCluster(Vector3 center, float speed) {
-
+        instantiateBubble(center + new Vector3(0, 0, 0), speed, Bubble.SINE_BUBBLE, Quaternion.identity);
+        instantiateBubble(center + new Vector3(0, 0, 0), speed, Bubble.SINE_BUBBLE, Quaternion.Euler(0, 0, 120));
+        instantiateBubble(center + new Vector3(0, 0, 0), speed, Bubble.SINE_BUBBLE, Quaternion.Euler(0, 0, 240));
     }
 }
