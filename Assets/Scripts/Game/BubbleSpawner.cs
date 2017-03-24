@@ -197,7 +197,7 @@ public class BubbleSpawner : MonoBehaviour {
 
         switch(level) {
             case 1:
-                spawnableTypes.Add(Bubble.EXPANDING_CLUSTER);
+                spawnableTypes.Add(Bubble.HELIX_CLUSTER);
                 break;
             case 6:
                 spawnableTypes.Add(Bubble.SIMPLE_BUBBLE);
@@ -231,8 +231,15 @@ public class BubbleSpawner : MonoBehaviour {
 
     // Spawns double sine bubbles in a helix formation
     void spawnHelixCluster(Vector3 center, float speed) {
-        instantiateBubble(center + new Vector3(0, 0.5f, 0), speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
-        instantiateBubble(center + new Vector3(0, -0.5f, 0), speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
+        GameObject one = instantiateBubble(center + new Vector3(0, 0, 0), speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
+        one.GetComponent<Bubble>().sineOffset = 0;
+        one.GetComponent<Bubble>().amplitude = 0.05f;
+        GameObject two = instantiateBubble(center + new Vector3(0, 0, 0), speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
+        two.GetComponent<Bubble>().sineOffset = 2 * Mathf.PI / 3.0f;
+        two.GetComponent<Bubble>().amplitude = 0.05f;
+        GameObject three = instantiateBubble(center + new Vector3(0, 0, 0), speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
+        three.GetComponent<Bubble>().sineOffset = 4 * Mathf.PI / 3.0f;
+        three.GetComponent<Bubble>().amplitude = 0.05f;
     }
 
     // Spawns sine bubbles at different rotations so they expand and contract on the same point

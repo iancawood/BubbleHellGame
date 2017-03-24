@@ -423,7 +423,7 @@ MonoBehaviour:
   initialMinSpeed: 5
   initialMaxSpeed: 25
   speedIncrement: 0.5
-  spawnRate: 0.7
+  spawnRate: 3
   maxSpawnRate: 0.05
   spawnRateIncrement: 0.05
   lowDiceValue: 1

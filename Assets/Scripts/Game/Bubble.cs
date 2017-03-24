@@ -18,6 +18,11 @@ public class Bubble : MonoBehaviour {
     public float speed = 15f;
     public int type = SIMPLE_BUBBLE;
 
+    // For Double Sine Bubble
+    public float timeScale = 4f;
+    public float amplitude = 0.15f;
+    public float sineOffset = 0;
+
     void Start ()
     {
         if (type == SIMPLE_BUBBLE)
@@ -49,8 +54,8 @@ public class Bubble : MonoBehaviour {
         }
         else if (type == DOUBLE_SINE_BUBBLE) {
             transform.position += (Vector3.back * Time.deltaTime * speed);
-            transform.position += (Vector3.up * Mathf.Cos(Time.time * 4.0f) * 0.15f);
-            transform.position += (Vector3.right * Mathf.Sin(Time.time * 4.0f) * 0.15f);
+            transform.position += (Vector3.up * Mathf.Cos(Time.time * timeScale + sineOffset) * amplitude);
+            transform.position += (Vector3.right * Mathf.Sin(Time.time * timeScale + sineOffset) * amplitude);
         }
         else if (type == HOMING_BUBBLE)
         {
