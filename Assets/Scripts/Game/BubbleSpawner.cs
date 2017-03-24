@@ -197,15 +197,21 @@ public class BubbleSpawner : MonoBehaviour {
 
         switch(level) {
             case 1:
-                spawnableTypes.Add(Bubble.HELIX_CLUSTER);
+                spawnableTypes.Add(Bubble.SIMPLE_BUBBLE);
+                break;
+            case 3:
+                spawnableTypes.Add(Bubble.SINE_BUBBLE);
                 break;
             case 6:
-                spawnableTypes.Add(Bubble.SIMPLE_BUBBLE);
+                spawnableTypes.Add(Bubble.SIMPLE_CLUSTER);
+                spawnableTypes.Add(Bubble.DOUBLE_SINE_BUBBLE);
                 break;
             case 11:
                 spawnableTypes.Add(Bubble.HOMING_BUBBLE);
+                spawnableTypes.Add(Bubble.EXPANDING_CLUSTER);
                 break;
-            case 16:
+            case 13:
+                spawnableTypes.Add(Bubble.HELIX_CLUSTER);
                 break;
             default:
                 break;
