@@ -231,13 +231,13 @@ public class BubbleSpawner : MonoBehaviour {
 
     // Spawns double sine bubbles in a helix formation
     void spawnHelixCluster(Vector3 center, float speed) {
-        GameObject one = instantiateBubble(center + new Vector3(0, 0, 0), speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
+        GameObject one = instantiateBubble(center, speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
         one.GetComponent<Bubble>().sineOffset = 0;
         one.GetComponent<Bubble>().amplitude = 0.05f;
-        GameObject two = instantiateBubble(center + new Vector3(0, 0, 0), speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
+        GameObject two = instantiateBubble(center, speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
         two.GetComponent<Bubble>().sineOffset = 2 * Mathf.PI / 3.0f;
         two.GetComponent<Bubble>().amplitude = 0.05f;
-        GameObject three = instantiateBubble(center + new Vector3(0, 0, 0), speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
+        GameObject three = instantiateBubble(center, speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
         three.GetComponent<Bubble>().sineOffset = 4 * Mathf.PI / 3.0f;
         three.GetComponent<Bubble>().amplitude = 0.05f;
     }
