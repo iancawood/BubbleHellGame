@@ -18,7 +18,6 @@ public class Player : MonoBehaviour {
 		// move in the direction of last two points
 		if(points.Count >=2){
 			Vector3 move = points[points.Count-1] - points[points.Count-2];
-//			move.Normalize ();
 			transform.position += move * SPEED * Time.deltaTime;
 		}
     }
