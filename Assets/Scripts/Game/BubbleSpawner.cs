@@ -13,12 +13,14 @@ public class BubbleSpawner : MonoBehaviour {
         public int type;
         public int level;
         public int spawnChance;
+        public int spawnIncrement;
 
         public BubbleType(BubbleType copy) {
             name = copy.name;
             type = copy.type;
             level = copy.level;
             spawnChance = copy.spawnChance;
+            spawnIncrement = copy.spawnIncrement;
         }
     }
     public List<BubbleType> bubbleTypes;
@@ -163,9 +165,11 @@ public class BubbleSpawner : MonoBehaviour {
             spawnRate -= spawnIncrement;
         }
 
-        chooseSpawnableTypes(level);
+        bool typeAdded = chooseSpawnableTypes(level);
 
-        shuffleSpawnableTypes();
+        if (!typeAdded) {
+            increaseSpawnChance();
+        }
     }
 
     // Adds a bubble type to the front list of the list and pushes other spawn chances to a higher value
@@ -181,16 +185,24 @@ public class BubbleSpawner : MonoBehaviour {
     }
 
     // Determines what bubbles will exist at each level.
-    void chooseSpawnableTypes(int level) {
+    bool chooseSpawnableTypes(int level) {
+        bool typeAdded = false;
         foreach (BubbleType bubbleType in bubbleTypes) {
             if (bubbleType.level == level) {
                 addToSpawnableTypes(bubbleType);
+                typeAdded = true;
             }
         }
+        return typeAdded;
     }
 
-    void shuffleSpawnableTypes() {
+    void increaseSpawnChance() {
+        int totalIncrease = 0;
 
+        foreach (BubbleType bubbleType in spawnableTypes) {
+            totalIncrease += bubbleType.spawnIncrement;
+            bubbleType.spawnChance += totalIncrease;            
+        }
     }
 
     // Spawns 4 simple bubbles in a diamond shaped cluster
