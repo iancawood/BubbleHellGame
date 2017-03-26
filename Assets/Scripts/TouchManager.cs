@@ -2,63 +2,53 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class TouchManager : MonoBehaviour {
 
 	public static TouchManager Instance { set; get;} //singleton
+	public GameObject recipient;
 
 	private void Start(){
 		Instance = this;
 		DontDestroyOnLoad (this.gameObject);
+		print (SceneManager.GetActiveScene ().name);
 	}
 
-	void Update () {
-	// For testing in unity editor
+	void Update (){
+		if (!recipient) { recipient = GameObject.FindGameObjectWithTag ("Player"); }
+
 	#if UNITY_EDITOR
-		if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(0) || Input.GetMouseButtonUp(0)) {
-				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-				RaycastHit hit;
+		Vector3 mp = Input.mousePosition;
+		mp.z = 10;
+		Vector3 v = Camera.main.ScreenToWorldPoint (mp);
 
-			if (Physics.Raycast (ray, out hit)) {
-				GameObject recipient = hit.transform.gameObject;
-
-				if (Input.GetMouseButtonDown(0)) {
-					recipient.SendMessage ("OnTouchDown", hit.point);
-				}
-				if (Input.GetMouseButtonUp(0)) {
-					recipient.SendMessage ("OnTouchUp", hit.point);
-				}
-				if (Input.GetMouseButton(0)) {
-					recipient.SendMessage ("OnTouchHold", hit.point);
-				}
+		if (recipient){
+			if (Input.GetMouseButtonDown(0)){
+				recipient.SendMessage ("OnTouchDown", v);
+			} else if (Input.GetMouseButtonUp(0)){
+				recipient.SendMessage ("OnTouchUp", v);
+			} else if(Input.GetMouseButton(0)) {
+				recipient.SendMessage ("OnTouchHold", v);
 			}
 		}
 	#endif
 		// For mobile
-		if (Input.touchCount > 0) {
+		if (Input.touchCount > 0 && recipient) {
 			foreach (Touch touch in Input.touches) {
-				Ray ray = Camera.main.ScreenPointToRay (touch.position);
-				RaycastHit hit;
-
-				// 4 phases of a touch event
-				if (Physics.Raycast (ray, out hit)) {
-					GameObject recipient = hit.transform.gameObject;
-
-					if (touch.phase == TouchPhase.Began) {
-						recipient.SendMessage ("OnTouchDown", hit.point);
-					}
-					if (touch.phase == TouchPhase.Ended) {
-						recipient.SendMessage ("OnTouchUp", hit.point);
-					}
-					if (touch.phase == TouchPhase.Moved) {
-						recipient.SendMessage ("OnTouchHold", hit.point);
-					}
-					if (touch.phase == TouchPhase.Canceled) {
-						recipient.SendMessage ("OnTouchCancelled", SendMessageOptions.DontRequireReceiver);
-					}
+				Vector3 tp = touch.position;
+				tp.z = 10;
+				Vector3 w = Camera.main.ScreenToWorldPoint (tp);
+				if (touch.phase == TouchPhase.Began) {
+					recipient.SendMessage ("OnTouchDown", w);
+				} else if (touch.phase == TouchPhase.Ended) {
+					recipient.SendMessage ("OnTouchUp", w);
+				} else if (touch.phase == TouchPhase.Moved) {
+					recipient.SendMessage ("OnTouchHold", w);
+				} else {
+					recipient.SendMessage ("OnTouchCancelled", SendMessageOptions.DontRequireReceiver);
 				}
-
 			}
 		}
 	}

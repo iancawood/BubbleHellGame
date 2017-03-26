@@ -16,19 +16,19 @@ public class AdManager : MonoBehaviour {
 		Instance = this;
 		DontDestroyOnLoad (this.gameObject);
 
-		Admob.Instance().initAdmob(bannerId, videoId);
+//		Admob.Instance().initAdmob(bannerId, videoId);
 		// Allow ads for testing mode - REMOVE WHEN PUBLISHING TODO
-		Admob.Instance ().setTesting (true);
-		Admob.Instance ().loadInterstitial ();
+//		Admob.Instance ().setTesting (true);
+//		Admob.Instance ().loadInterstitial ();
 	}
 
 	public void ShowBanner(){
-		Admob.Instance ().showBannerRelative (AdSize.Banner, AdPosition.TOP_CENTER, 5, "defaultBanner");
+//		Admob.Instance ().showBannerRelative (AdSize.Banner, AdPosition.TOP_CENTER, 5, "defaultBanner");
 	}
 
 	public void ShowVideo(){
 		if (Admob.Instance ().isInterstitialReady()) {
-			Admob.Instance ().showInterstitial ();
+//			Admob.Instance ().showInterstitial ();
 		}
 	}
 }

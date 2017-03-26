@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cf190920eef24edebb2b48c0f6e0225, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadTime: 2
+  loadTime: 0.5
 --- !u!1 &1514901122
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,6 +367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5be5fe2307fc84dc8b752adcef34b617, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  recipient: {fileID: 0}
 --- !u!1 &1872417445
 GameObject:
   m_ObjectHideFlags: 0
