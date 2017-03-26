@@ -37,6 +37,7 @@ public class BubbleSpawner : MonoBehaviour {
     float spawnerZPos;
 
     float nextSpawn = 0;
+    bool spawning = false;
 
     const float PIPE_THICKNESS = 2f;
     const int HUNDRED_PERCENT = 100;
@@ -77,17 +78,29 @@ public class BubbleSpawner : MonoBehaviour {
     }
 
 	void Update () {
-        nextSpawn -= Time.deltaTime;
+        if (spawning) {
+            nextSpawn -= Time.deltaTime;
 
-        if (nextSpawn <= 0) {
-            nextSpawn = spawnRate;
-            spawnBubble();
+            if (nextSpawn <= 0) {
+                nextSpawn = spawnRate;
+                spawnBubble();
+            }
         }
     }
 
     // Reset bubble spawner to initial state
     void reset() {
         chooseSpawnableTypes(1);
+        nextSpawn = 0;
+    }
+
+    public void disable() {
+        spawning = false;
+    }
+
+    public void enable() {
+        spawning = true;
+        reset();
     }
 
     // Chooses the properties of a bubble or bubble cluster and then spawns it

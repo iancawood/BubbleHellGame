@@ -5,13 +5,14 @@ public class Player : MonoBehaviour {
     float SPEED = 5f;
     float COLLISION_BIAS = 2f;
 
-    float radius;
+    bool canMove = false;
 
     void Start() {
-        //radius = GetComponent<>()
+
     }
 
     void Update() {
+        if (canMove) {
 #if UNITY_EDITOR
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0);
 
@@ -19,6 +20,7 @@ public class Player : MonoBehaviour {
             transform.position += move * SPEED * Time.deltaTime;
         }
 #endif
+        }
     }
 
     // Anticipate a collision with the pipe before it happens. Doesnt work though. Need to lerp transform.position + move.
@@ -29,6 +31,20 @@ public class Player : MonoBehaviour {
     private void OnCollisionEnter(Collision collision) {
         if (collision.collider.tag == "Bubble") {
             Debug.Log("Ded");
+            GameObject.FindGameObjectWithTag("GameManager").GetComponent<MainMenu>().gameEnd();
         }
+    }
+
+    void reset() {
+        transform.position = Vector3.zero;
+    } 
+
+    public void disable() {
+        canMove = false;
+        reset();
+    }
+
+    public void enable() {
+        canMove = true;
     }
 }
