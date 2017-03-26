@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour {
     public float speed = 5f;
-    float COLLISION_BIAS = 2f;
+    float COLLISION_BIAS = 1f;
 	float radius;
 
 	public List<Vector3> points;
@@ -18,8 +18,10 @@ public class Player : MonoBehaviour {
 		// move in the direction of last two points
 		if(points.Count >=2){
 			Vector3 move = points[points.Count-1] - points[points.Count-2];
-			transform.position += move * speed * Time.deltaTime;
-		}
+            if (!pipeCollision(move)) {
+                transform.position += move * speed * Time.deltaTime;
+            }
+        }
     }
 
     // Anticipate a collision with the pipe before it happens. Doesnt work though. Need to lerp transform.position + move.
