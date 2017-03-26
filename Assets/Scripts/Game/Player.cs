@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Player : MonoBehaviour {
-    float SPEED = 5f;
+    public float speed = 5f;
     float COLLISION_BIAS = 2f;
 	float radius;
 
@@ -18,7 +18,7 @@ public class Player : MonoBehaviour {
 		// move in the direction of last two points
 		if(points.Count >=2){
 			Vector3 move = points[points.Count-1] - points[points.Count-2];
-			transform.position += move * SPEED * Time.deltaTime;
+			transform.position += move * speed * Time.deltaTime;
 		}
     }
 
