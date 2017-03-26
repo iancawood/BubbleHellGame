@@ -13,14 +13,14 @@ public class BubbleSpawner : MonoBehaviour {
         public int type;
         public int level;
         public int spawnChance;
-        public int spawnIncrement;
+        public int growthRate;
 
         public BubbleType(BubbleType copy) {
             name = copy.name;
             type = copy.type;
             level = copy.level;
             spawnChance = copy.spawnChance;
-            spawnIncrement = copy.spawnIncrement;
+            growthRate = copy.growthRate;
         }
     }
     public List<BubbleType> bubbleTypes;
@@ -200,7 +200,7 @@ public class BubbleSpawner : MonoBehaviour {
         int totalIncrease = 0;
 
         foreach (BubbleType bubbleType in spawnableTypes) {
-            totalIncrease += bubbleType.spawnIncrement;
+            totalIncrease += bubbleType.growthRate;
             bubbleType.spawnChance += totalIncrease;            
         }
     }
