@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour {
 	void Start () {
-        //gameStart(); // This should be removed once the menu is added.
         GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().disable();
         showHighscore();
     }
@@ -23,8 +22,7 @@ public class MainMenu : MonoBehaviour {
         {
             Destroy(bubbles[i]);
         }
-
-        // disable menu here      
+  
         transform.Find("MainMenu").gameObject.SetActive(false);
     }
 
@@ -38,10 +36,8 @@ public class MainMenu : MonoBehaviour {
         ScoreManager scoreManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ScoreManager>();
         scoreManager.disable();
         saveHighscore(scoreManager.score());
+        showHighscore();
 
-        Debug.Log(getHighscore());
-
-        // enable menu here
         transform.Find("MainMenu").gameObject.SetActive(true);
     }
 
@@ -60,6 +56,6 @@ public class MainMenu : MonoBehaviour {
     void showHighscore()
     {
         Text hs = transform.Find("MainMenu").gameObject.transform.Find("HighscoreText").GetComponent<Text>();
-        hs.text = "Highscore: " + getHighscore();
+        hs.text = "Highscore: " + getHighscore().ToString("0.00");
     }
 }
