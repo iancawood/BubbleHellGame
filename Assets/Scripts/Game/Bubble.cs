@@ -40,19 +40,28 @@ public class Bubble : MonoBehaviour {
         else if (type == HOMING_BUBBLE)
         {
             this.GetComponent<Renderer>().material.color = Color.red;
+        } 
+        else if (type == SIMPLE_CLUSTER) {
+            this.GetComponent<Renderer>().material.color = Color.green;
+        } 
+        else if (type == HELIX_CLUSTER) {
+            this.GetComponent<Renderer>().material.color = Color.black;
+        } 
+        else if (type == EXPANDING_CLUSTER) {
+            this.GetComponent<Renderer>().material.color = Color.magenta;
         }
     }
 
     void Move ()
     {
-        if (type == SIMPLE_BUBBLE) {
+        if (type == SIMPLE_BUBBLE || type == SIMPLE_CLUSTER) {
             transform.position += Vector3.back * Time.deltaTime * speed;
         }
-        else if (type == SINE_BUBBLE) {
+        else if (type == SINE_BUBBLE || type == EXPANDING_CLUSTER) {
             transform.position += (Vector3.back * Time.deltaTime * speed);
             transform.position += (transform.up * Mathf.Sin (Time.time * 8.0f) * 0.25f);
         }
-        else if (type == DOUBLE_SINE_BUBBLE) {
+        else if (type == DOUBLE_SINE_BUBBLE || type == HELIX_CLUSTER) {
             transform.position += (Vector3.back * Time.deltaTime * speed);
             transform.position += (Vector3.up * Mathf.Cos(Time.time * timeScale + sineOffset) * amplitude);
             transform.position += (Vector3.right * Mathf.Sin(Time.time * timeScale + sineOffset) * amplitude);
