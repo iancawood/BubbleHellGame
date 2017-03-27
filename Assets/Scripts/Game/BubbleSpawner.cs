@@ -6,21 +6,41 @@ public class BubbleSpawner : MonoBehaviour {
 
     public GameObject bubble;
     public Transform bubbleJar;
+
+    [System.Serializable]
+    public class BubbleType {
+        public string name;
+        public int type;
+        public int level;
+        public int spawnChance;
+        public int growthRate;
+
+        public BubbleType(BubbleType copy) {
+            name = copy.name;
+            type = copy.type;
+            level = copy.level;
+            spawnChance = copy.spawnChance;
+            growthRate = copy.growthRate;
+        }
+    }
+    public List<BubbleType> bubbleTypes;
+
+    [Header("Speed")]
     public int initialMinSpeed = 5;
     public int initialMaxSpeed = 25;
     public float speedIncrement = 0.5f;
+    [Header("Spawn Rate")]
     public float spawnRate = 3f; // delay between bubbles spawns
     public float maxSpawnRate = 0.05f;
-    public float spawnRateIncrement = 0.05f;
-    public int lowDiceValue = 1;
-    public int highDiceValue = 6;
-    public int numDice = 2;
+    public float spawnIncrement = 0.05f;
 
     float spawnerZPos;
 
     float nextSpawn = 0;
+    bool spawning = false;
 
     const float PIPE_THICKNESS = 2f;
+    const int HUNDRED_PERCENT = 100;
 
     class Range {
         public float min;
@@ -38,14 +58,11 @@ public class BubbleSpawner : MonoBehaviour {
     }
 
     Range speedRange;
-    Range typeRange;
     Range spawnerXRange;
     Range spawnerYRange;
     Range pipeRange;
 
-    Dictionary<int, int> typeMapping = new Dictionary<int, int>();
-    int currentType = 0;
-    List<int> spawnableTypes = new List<int>();
+    List<BubbleType> spawnableTypes = new List<BubbleType>();
 
     void Start () {
         Collider collider = this.GetComponent<Collider>();
@@ -55,26 +72,35 @@ public class BubbleSpawner : MonoBehaviour {
         spawnerYRange = new Range(collider.bounds.min.y, collider.bounds.max.y);
 
         speedRange = new Range(initialMinSpeed, initialMaxSpeed);
-        typeRange = new Range(lowDiceValue, highDiceValue);
         pipeRange = new Range(0, PipeBuilder.pipeRadius);
 
         reset();
     }
 
 	void Update () {
-        nextSpawn -= Time.deltaTime;
+        if (spawning) {
+            nextSpawn -= Time.deltaTime;
 
-        if (nextSpawn <= 0) {
-            nextSpawn = spawnRate;
-            spawnBubble();
+            if (nextSpawn <= 0) {
+                nextSpawn = spawnRate;
+                spawnBubble();
+            }
         }
     }
 
     // Reset bubble spawner to initial state
     void reset() {
-        spawnableTypes = new List<int>();
         chooseSpawnableTypes(1);
-        populateMapping();
+        nextSpawn = 0;
+    }
+
+    public void disable() {
+        spawning = false;
+    }
+
+    public void enable() {
+        spawning = true;
+        reset();
     }
 
     // Chooses the properties of a bubble or bubble cluster and then spawns it
@@ -87,13 +113,13 @@ public class BubbleSpawner : MonoBehaviour {
             instantiateBubble(position, speed, type, Quaternion.identity);
         }
         else if (type == Bubble.SIMPLE_CLUSTER) {
-            spawnSimpleCluster(position, speed);
+            spawnSimpleCluster(position, speed, type);
         }
         else if (type == Bubble.HELIX_CLUSTER) {
-            spawnHelixCluster(position, speed);
+            spawnHelixCluster(position, speed, type);
         } 
         else if (type == Bubble.EXPANDING_CLUSTER) {
-            spawnExpandingCluster(position, speed);
+            spawnExpandingCluster(position, speed, type);
         }
     }
 
@@ -125,13 +151,17 @@ public class BubbleSpawner : MonoBehaviour {
 
     // Selects the type of the bubble by rolling a set of dice and looking up the outcome
     int selectBubbleType() {
-        int outcome = 0;
+        int outcome = Random.Range(0, 100);
+        int type = Bubble.SIMPLE_BUBBLE;
 
-        for (int i = 0; i < numDice; i++) {
-            outcome += Random.Range((int)typeRange.min, (int)typeRange.max);
+        foreach (BubbleType bubbleType in spawnableTypes) {
+            if (outcome <= bubbleType.spawnChance) {
+                type = bubbleType.type;
+                break;
+            }
         }
 
-        return typeMapping[outcome];
+        return type;
     }
 
     // Randomly determine speed of bubble
@@ -144,114 +174,75 @@ public class BubbleSpawner : MonoBehaviour {
         speedRange.min += speedIncrement;
         speedRange.max += speedIncrement;
 
-        if ((spawnRate - spawnRateIncrement) >= maxSpawnRate) {
-            spawnRate -= spawnRateIncrement;
+        if ((spawnRate - spawnIncrement) >= maxSpawnRate) {
+            spawnRate -= spawnIncrement;
         }
 
-        chooseSpawnableTypes(level);
+        bool typeAdded = chooseSpawnableTypes(level);
 
-        shuffleTypeMapping();
-    }
-
-    // Fills the type mapping but starting in the middle and moving outward
-    void populateMapping() {
-        // reset some stuff
-        typeMapping = new Dictionary<int, int>();
-        currentType = 0;
-
-        // prep useful variables
-        int minRoll = numDice * (int)typeRange.min;
-        int maxRoll = numDice * (int)typeRange.max;
-        int numOutcomes = maxRoll - minRoll + 1;
-        int numIterations = (int)Mathf.Ceil(numOutcomes / 2.0f);
-        int midPoint = (maxRoll + minRoll) / 2;
-
-        // iterate from the middle of the mapping outward
-        for (int i = 0; i <= numIterations; i++) {
-            if (i == 0) {
-                addTypeMapping(midPoint);
-            } else {
-                if (midPoint + i <= maxRoll) {
-                    addTypeMapping(midPoint + i);
-                }
-                if (midPoint - i >= minRoll) {
-                    addTypeMapping(midPoint - i);
-                }
-            }
+        if (!typeAdded) {
+            increaseSpawnChance();
         }
     }
 
-    // Adds an entry into the type mapping
-    void addTypeMapping(int index) {
-        if (currentType >= spawnableTypes.Count) {
-            currentType = 0;
+    // Adds a bubble type to the front list of the list and pushes other spawn chances to a higher value
+    // This guarantees that the list is sorted in ascending order based on spawn chance
+    void addToSpawnableTypes(BubbleType BubbleType) {
+        BubbleType copy = new BubbleType(BubbleType);
+
+        foreach (BubbleType bubbleType in spawnableTypes) {
+            bubbleType.spawnChance += copy.spawnChance;
         }
 
-        typeMapping.Add(index, spawnableTypes[currentType++]);
+        spawnableTypes.Insert(0, copy);
     }
 
     // Determines what bubbles will exist at each level.
-    // Change the switch case in the function to configure what level different bubbles types are added
-    void chooseSpawnableTypes(int level) {
-        int oldSize = spawnableTypes.Count;
-
-        switch(level) {
-            case 1:
-                spawnableTypes.Add(Bubble.SIMPLE_BUBBLE);
-                break;
-            case 3:
-                spawnableTypes.Add(Bubble.SINE_BUBBLE);
-                break;
-            case 6:
-                spawnableTypes.Add(Bubble.SIMPLE_CLUSTER);
-                spawnableTypes.Add(Bubble.DOUBLE_SINE_BUBBLE);
-                break;
-            case 11:
-                spawnableTypes.Add(Bubble.HOMING_BUBBLE);
-                spawnableTypes.Add(Bubble.EXPANDING_CLUSTER);
-                break;
-            case 13:
-                spawnableTypes.Add(Bubble.HELIX_CLUSTER);
-                break;
-            default:
-                break;
+    bool chooseSpawnableTypes(int level) {
+        bool typeAdded = false;
+        foreach (BubbleType bubbleType in bubbleTypes) {
+            if (bubbleType.level == level) {
+                addToSpawnableTypes(bubbleType);
+                typeAdded = true;
+            }
         }
-
-        if (spawnableTypes.Count > oldSize) {
-            populateMapping();
-        }
+        return typeAdded;
     }
 
-    // Shuffles the indices in the type mapping to increase chance of harder bubbles spawning
-    void shuffleTypeMapping() {
+    void increaseSpawnChance() {
+        int totalIncrease = 0;
 
+        foreach (BubbleType bubbleType in spawnableTypes) {
+            totalIncrease += bubbleType.growthRate;
+            bubbleType.spawnChance += totalIncrease;            
+        }
     }
 
     // Spawns 4 simple bubbles in a diamond shaped cluster
-    void spawnSimpleCluster(Vector3 center, float speed) {
-        instantiateBubble(center + new Vector3(-1, 0, 0), speed, Bubble.SIMPLE_BUBBLE, Quaternion.identity);
-        instantiateBubble(center + new Vector3(1, 0, 0), speed, Bubble.SIMPLE_BUBBLE, Quaternion.identity);
-        instantiateBubble(center + new Vector3(0, -1, 0), speed, Bubble.SIMPLE_BUBBLE, Quaternion.identity);
-        instantiateBubble(center + new Vector3(0, 1, 0), speed, Bubble.SIMPLE_BUBBLE, Quaternion.identity);
+    void spawnSimpleCluster(Vector3 center, float speed, int type) {
+        instantiateBubble(center + new Vector3(-1, 0, 0), speed, type, Quaternion.identity);
+        instantiateBubble(center + new Vector3(1, 0, 0), speed, type, Quaternion.identity);
+        instantiateBubble(center + new Vector3(0, -1, 0), speed, type, Quaternion.identity);
+        instantiateBubble(center + new Vector3(0, 1, 0), speed, type, Quaternion.identity);
     }
 
     // Spawns double sine bubbles in a helix formation
-    void spawnHelixCluster(Vector3 center, float speed) {
-        GameObject one = instantiateBubble(center, speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
+    void spawnHelixCluster(Vector3 center, float speed, int type) {
+        GameObject one = instantiateBubble(center, speed, type, Quaternion.identity);
         one.GetComponent<Bubble>().sineOffset = 0;
         one.GetComponent<Bubble>().amplitude = 0.05f;
-        GameObject two = instantiateBubble(center, speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
+        GameObject two = instantiateBubble(center, speed, type, Quaternion.identity);
         two.GetComponent<Bubble>().sineOffset = 2 * Mathf.PI / 3.0f;
         two.GetComponent<Bubble>().amplitude = 0.05f;
-        GameObject three = instantiateBubble(center, speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
+        GameObject three = instantiateBubble(center, speed, type, Quaternion.identity);
         three.GetComponent<Bubble>().sineOffset = 4 * Mathf.PI / 3.0f;
         three.GetComponent<Bubble>().amplitude = 0.05f;
     }
 
     // Spawns sine bubbles at different rotations so they expand and contract on the same point
-    void spawnExpandingCluster(Vector3 center, float speed) {
-        instantiateBubble(center, speed, Bubble.SINE_BUBBLE, Quaternion.identity);
-        instantiateBubble(center, speed, Bubble.SINE_BUBBLE, Quaternion.Euler(0, 0, 120));
-        instantiateBubble(center, speed, Bubble.SINE_BUBBLE, Quaternion.Euler(0, 0, 240));
+    void spawnExpandingCluster(Vector3 center, float speed, int type) {
+        instantiateBubble(center, speed, type, Quaternion.identity);
+        instantiateBubble(center, speed, type, Quaternion.Euler(0, 0, 120));
+        instantiateBubble(center, speed, type, Quaternion.Euler(0, 0, 240));
     }
 }

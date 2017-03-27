@@ -8,6 +8,7 @@ public class Player : MonoBehaviour {
 	float radius;
 
 	public List<Vector3> points;
+	bool canMove = false;
 
     void Start() {
 		points.Add (new Vector3(0, 0, 10)); 
@@ -16,7 +17,7 @@ public class Player : MonoBehaviour {
 
     void Update() {
 		// move in the direction of last two points
-		if(points.Count >=2){
+		if(points.Count >=2 && canMove){
 			Vector3 move = points[points.Count-1] - points[points.Count-2];
 			transform.position += move * speed * Time.deltaTime;
 		}
@@ -29,7 +30,7 @@ public class Player : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision) {
         if (collision.collider.tag == "Bubble") {
-            Debug.Log("Ded");
+            GameObject.FindGameObjectWithTag("GameManager").GetComponent<MainMenu>().gameEnd();
         }
     }
 
@@ -50,4 +51,17 @@ public class Player : MonoBehaviour {
 		//only ever want 2 points in the list for efficiency
 		if (points.Count > 2) { points.RemoveAt (0); }
 	}
+
+    void reset() {
+        //transform.position = Vector3.zero;
+    } 
+
+    public void disable() {
+        canMove = false;
+        reset();
+    }
+
+    public void enable() {
+        canMove = true;
+    }
 }

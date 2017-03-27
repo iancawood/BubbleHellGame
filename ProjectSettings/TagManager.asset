@@ -9,6 +9,7 @@ TagManager:
   - GameManager
   - Bubble
   - BubbleSpawner
+  - MainMenu
   layers:
   - Default
   - TransparentFX

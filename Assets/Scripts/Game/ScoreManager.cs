@@ -5,43 +5,58 @@ using System.Collections;
 public class ScoreManager : MonoBehaviour {
     // A manager class that handles all score related functionality as well as triggering level changes.
 
-    public Text highScoreText;
+    public Text scoreText;
+    public Text levelText;
 
-    int nextLevelUp;
+    float nextLevelUp;
     int currentLevel = 1;
+    float startTime = 0;
 
-    int LEVEL_UP = 10; // Amount of seconds between each level change
+    public int levelDuration = 10;
 
     void Start() {
         reset();
     }
 
     void Update() {
-        highScoreText.text = "Score: " + scoreAsString();
+        scoreText.text = "Score: " + scoreAsString();
 
         if (score() > nextLevelUp) {
             levelUp();
         }
     }
 
-    float score() {
-        return Time.time;
+    public float score() {
+        return Time.time - startTime;
     }
 
     string scoreAsString() {
-        return Time.time.ToString("0.00");
+        return score().ToString("0.00");
     }
 
     void reset() {
-        nextLevelUp = LEVEL_UP;
+        startTime = Time.time;
+        nextLevelUp = levelDuration;
         currentLevel = 1;
+        levelText.text = "Level: " + currentLevel.ToString();
+    }
+
+    public void disable() {
+        scoreText.enabled = false;
+        levelText.enabled = false;
+    }
+
+    public void enable() {
+        scoreText.enabled = true;
+        levelText.enabled = true;
+        reset();
     }
 
     void levelUp() {
-        Debug.Log("Level up!");
-
-        nextLevelUp += LEVEL_UP;
+        nextLevelUp += levelDuration;
         currentLevel++;
+
+        levelText.text = "Level: " + currentLevel.ToString();
 
         GameObject.FindGameObjectWithTag("PipeBuilder").SendMessage("changeTheme");
         GameObject.FindGameObjectWithTag("BubbleSpawner").SendMessage("increaseDifficulty", currentLevel);
