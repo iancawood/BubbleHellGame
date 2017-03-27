@@ -5,13 +5,13 @@
 ### Game Features
 - Playing bubble hell involves flying through in infinite tunnel and trying to avoid the onslaught of bubbles that are moving towards you. There is one life per session and striking a single bubble means the game session ends. So be careful. Try and stay alive the longest to get the highest score.
 - There are 7 bubble types, 4 single types and 3 cluster types:
-1.Simple Bubble: Single bubble that moves in a straight line.
-2.Sine Bubble: Single bubble that moves in a wave form.
-3.Double Sine Bubble: Single bubble that moves in a spiral.
-4.Homing Bubble: Single bubble that moves towards the players position.
-5.Simple Cluster: Four simple bubbles in a diamond formation.
-6.Helix Cluster: Three double sine bubbles that spiral together.
-7.Expanding Cluster: Three sine bubbles that expand and contract towards the same central point.
+⋅⋅1. Simple Bubble: Single bubble that moves in a straight line.
+⋅⋅2. Sine Bubble: Single bubble that moves in a wave form.
+⋅⋅3. Double Sine Bubble: Single bubble that moves in a spiral.
+⋅⋅4. Homing Bubble: Single bubble that moves towards the players position.
+⋅⋅5. Simple Cluster: Four simple bubbles in a diamond formation.
+⋅⋅6. Helix Cluster: Three double sine bubbles that spiral together.
+⋅⋅7. Expanding Cluster: Three sine bubbles that expand and contract towards the same central point.
 
 ### How To Play
 - This game is intended for mobile devices, so everything works with touch commands. However, touch commands can be simulated on computer with a mouse commands.
