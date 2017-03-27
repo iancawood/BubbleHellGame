@@ -113,13 +113,13 @@ public class BubbleSpawner : MonoBehaviour {
             instantiateBubble(position, speed, type, Quaternion.identity);
         }
         else if (type == Bubble.SIMPLE_CLUSTER) {
-            spawnSimpleCluster(position, speed);
+            spawnSimpleCluster(position, speed, type);
         }
         else if (type == Bubble.HELIX_CLUSTER) {
-            spawnHelixCluster(position, speed);
+            spawnHelixCluster(position, speed, type);
         } 
         else if (type == Bubble.EXPANDING_CLUSTER) {
-            spawnExpandingCluster(position, speed);
+            spawnExpandingCluster(position, speed, type);
         }
     }
 
@@ -219,30 +219,30 @@ public class BubbleSpawner : MonoBehaviour {
     }
 
     // Spawns 4 simple bubbles in a diamond shaped cluster
-    void spawnSimpleCluster(Vector3 center, float speed) {
-        instantiateBubble(center + new Vector3(-1, 0, 0), speed, Bubble.SIMPLE_BUBBLE, Quaternion.identity);
-        instantiateBubble(center + new Vector3(1, 0, 0), speed, Bubble.SIMPLE_BUBBLE, Quaternion.identity);
-        instantiateBubble(center + new Vector3(0, -1, 0), speed, Bubble.SIMPLE_BUBBLE, Quaternion.identity);
-        instantiateBubble(center + new Vector3(0, 1, 0), speed, Bubble.SIMPLE_BUBBLE, Quaternion.identity);
+    void spawnSimpleCluster(Vector3 center, float speed, int type) {
+        instantiateBubble(center + new Vector3(-1, 0, 0), speed, type, Quaternion.identity);
+        instantiateBubble(center + new Vector3(1, 0, 0), speed, type, Quaternion.identity);
+        instantiateBubble(center + new Vector3(0, -1, 0), speed, type, Quaternion.identity);
+        instantiateBubble(center + new Vector3(0, 1, 0), speed, type, Quaternion.identity);
     }
 
     // Spawns double sine bubbles in a helix formation
-    void spawnHelixCluster(Vector3 center, float speed) {
-        GameObject one = instantiateBubble(center, speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
+    void spawnHelixCluster(Vector3 center, float speed, int type) {
+        GameObject one = instantiateBubble(center, speed, type, Quaternion.identity);
         one.GetComponent<Bubble>().sineOffset = 0;
         one.GetComponent<Bubble>().amplitude = 0.05f;
-        GameObject two = instantiateBubble(center, speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
+        GameObject two = instantiateBubble(center, speed, type, Quaternion.identity);
         two.GetComponent<Bubble>().sineOffset = 2 * Mathf.PI / 3.0f;
         two.GetComponent<Bubble>().amplitude = 0.05f;
-        GameObject three = instantiateBubble(center, speed, Bubble.DOUBLE_SINE_BUBBLE, Quaternion.identity);
+        GameObject three = instantiateBubble(center, speed, type, Quaternion.identity);
         three.GetComponent<Bubble>().sineOffset = 4 * Mathf.PI / 3.0f;
         three.GetComponent<Bubble>().amplitude = 0.05f;
     }
 
     // Spawns sine bubbles at different rotations so they expand and contract on the same point
-    void spawnExpandingCluster(Vector3 center, float speed) {
-        instantiateBubble(center, speed, Bubble.SINE_BUBBLE, Quaternion.identity);
-        instantiateBubble(center, speed, Bubble.SINE_BUBBLE, Quaternion.Euler(0, 0, 120));
-        instantiateBubble(center, speed, Bubble.SINE_BUBBLE, Quaternion.Euler(0, 0, 240));
+    void spawnExpandingCluster(Vector3 center, float speed, int type) {
+        instantiateBubble(center, speed, type, Quaternion.identity);
+        instantiateBubble(center, speed, type, Quaternion.Euler(0, 0, 120));
+        instantiateBubble(center, speed, type, Quaternion.Euler(0, 0, 240));
     }
 }
