@@ -7,6 +7,8 @@ public class Player : MonoBehaviour {
 
     bool canMove = false;
 
+    bool vibrate;
+
     void Start() {
 
     }
@@ -31,6 +33,9 @@ public class Player : MonoBehaviour {
     private void OnCollisionEnter(Collision collision) {
         if (collision.collider.tag == "Bubble") {
             GameObject.FindGameObjectWithTag("GameManager").GetComponent<MainMenu>().gameEnd();
+            if(vibrate) {
+                Handheld.Vibrate();
+            }
         }
     }
 
@@ -45,5 +50,11 @@ public class Player : MonoBehaviour {
 
     public void enable() {
         canMove = true;
+    }
+
+    //toggle vibrate
+    public void toggleVibrate()
+    {
+        vibrate = !vibrate;
     }
 }
