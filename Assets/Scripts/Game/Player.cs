@@ -34,7 +34,7 @@ public class Player : MonoBehaviour {
         if (collision.collider.tag == "Bubble") {
             GameObject.FindGameObjectWithTag("GameManager").GetComponent<MainMenu>().gameEnd();
             if(vibrate) {
-                //Handheld.Vibrate();
+                Handheld.Vibrate();
             }
         }
     }
