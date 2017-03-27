@@ -31,12 +31,4 @@ public class PipeBuilder : MonoBehaviour {
     void replacePipe(float offset) {
         createPipe(new Vector3(0, 0, pipeLength * (numPipes - 0.5f) + offset));
     }
-
-    void changeTheme() {
-        GameObject[] pipes = GameObject.FindGameObjectsWithTag("PipeSegment");
-
-        foreach (GameObject pipe in pipes) {
-            //pipe.GetComponent<Material>().DoSomething()
-        }
-    }
 }

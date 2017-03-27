@@ -57,8 +57,7 @@ public class ScoreManager : MonoBehaviour {
         currentLevel++;
 
         levelText.text = "Level: " + currentLevel.ToString();
-
-        GameObject.FindGameObjectWithTag("PipeBuilder").SendMessage("changeTheme");
+        
         GameObject.FindGameObjectWithTag("BubbleSpawner").SendMessage("increaseDifficulty", currentLevel);
     }
 }
