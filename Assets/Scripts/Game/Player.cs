@@ -10,7 +10,7 @@ public class Player : MonoBehaviour {
 	public List<Vector3> points;
 	bool canMove = false;
 
-    public bool vibrate;
+    bool vibrate;
 
     void Start() {
 		points.Add (new Vector3(0, 0, 10)); 
