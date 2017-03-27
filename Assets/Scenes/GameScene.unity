@@ -935,6 +935,7 @@ MonoBehaviour:
   pipeSegment: {fileID: 1752750687710266, guid: 01b29bf23e633a348bc14d1aa39dc5b7,
     type: 2}
   pipe: {fileID: 1741687648}
+  numPipes: 5
 --- !u!1 &609454839
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,7 +1187,7 @@ MonoBehaviour:
   initialMinSpeed: 5
   initialMaxSpeed: 25
   speedIncrement: 0.5
-  spawnRate: 0.7
+  initialSpawnRate: 3
   maxSpawnRate: 0.05
   spawnIncrement: 0.05
 --- !u!1 &801127559
