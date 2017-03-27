@@ -10,8 +10,9 @@ public class ScoreManager : MonoBehaviour {
 
     float nextLevelUp;
     int currentLevel = 1;
+    float startTime = 0;
 
-    int LEVEL_UP = 10; // Amount of seconds between each level change
+    public int levelDuration = 10;
 
     void Start() {
         reset();
@@ -25,16 +26,17 @@ public class ScoreManager : MonoBehaviour {
         }
     }
 
-    float score() {
-        return Time.time;
+    public float score() {
+        return Time.time - startTime;
     }
 
     string scoreAsString() {
-        return Time.time.ToString("0.00");
+        return score().ToString("0.00");
     }
 
     void reset() {
-        nextLevelUp = Time.time + LEVEL_UP;
+        startTime = Time.time;
+        nextLevelUp = Time.time + levelDuration;
         currentLevel = 1;
     }
 
@@ -50,7 +52,7 @@ public class ScoreManager : MonoBehaviour {
     }
 
     void levelUp() {
-        nextLevelUp += LEVEL_UP;
+        nextLevelUp += levelDuration;
         currentLevel++;
 
         levelText.text = "Level: " + currentLevel.ToString();

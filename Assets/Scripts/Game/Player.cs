@@ -30,7 +30,6 @@ public class Player : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision) {
         if (collision.collider.tag == "Bubble") {
-            Debug.Log("Ded");
             GameObject.FindGameObjectWithTag("GameManager").GetComponent<MainMenu>().gameEnd();
         }
     }

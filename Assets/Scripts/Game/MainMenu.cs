@@ -14,6 +14,8 @@ public class MainMenu : MonoBehaviour {
         GameObject.FindGameObjectWithTag("BubbleSpawner").GetComponent<BubbleSpawner>().enable();
 
         GameObject.FindGameObjectWithTag("GameManager").GetComponent<ScoreManager>().enable();
+
+        // disable menu here
     }
 
     // Called when player hit by bubble
@@ -22,11 +24,23 @@ public class MainMenu : MonoBehaviour {
 
         GameObject.FindGameObjectWithTag("BubbleSpawner").GetComponent<BubbleSpawner>().disable();
 
-        GameObject.FindGameObjectWithTag("GameManager").GetComponent<ScoreManager>().disable();
+        ScoreManager scoreManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ScoreManager>();
+        scoreManager.disable();
+        saveHighscore(scoreManager.score());
 
         GameObject[] bubbles = GameObject.FindGameObjectsWithTag("Bubble");
         for (int i = 0; i < bubbles.Length; i++) {
             Destroy(bubbles[i]);
         }
+
+        // enable menu here
+    }
+
+    void saveHighscore(float score) {
+        // player prefs stuff
+    }
+
+    float getHighscore() {
+        return 0;
     }
 }
