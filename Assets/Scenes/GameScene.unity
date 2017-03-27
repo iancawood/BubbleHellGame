@@ -1873,6 +1873,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5697e1e64ef9795419fb538326ed7126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 10
+  points: []
 --- !u!23 &1865623105
 MeshRenderer:
   m_ObjectHideFlags: 0
