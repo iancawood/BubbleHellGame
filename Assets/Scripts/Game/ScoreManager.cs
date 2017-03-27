@@ -36,8 +36,9 @@ public class ScoreManager : MonoBehaviour {
 
     void reset() {
         startTime = Time.time;
-        nextLevelUp = Time.time + levelDuration;
+        nextLevelUp = levelDuration;
         currentLevel = 1;
+        levelText.text = "Level: " + currentLevel.ToString();
     }
 
     public void disable() {
