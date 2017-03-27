@@ -75,4 +75,10 @@ public class Player : MonoBehaviour {
     {
         vibrate = !vibrate;
     }
+
+    public void adjustSpeed(float x)
+    {
+        float tmp = 5.0f;
+        speed = tmp * x;
+    }
 }
