@@ -55,7 +55,7 @@ public class MainMenu : MonoBehaviour {
 
     void showHighscore()
     {
-        Text hs = transform.Find("MainMenu").gameObject.transform.Find("HighscoreText").GetComponent<Text>();
+        Text hs = transform.Find("MainMenu").gameObject.transform.Find("MainPanel").gameObject.transform.Find("HighscoreText").GetComponent<Text>();
         hs.text = "Highscore: " + getHighscore().ToString("0.00");
     }
 }
