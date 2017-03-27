@@ -33,14 +33,20 @@ public class MainMenu : MonoBehaviour {
             Destroy(bubbles[i]);
         }
 
+        Debug.Log(getHighscore());
+
         // enable menu here
     }
 
     void saveHighscore(float score) {
-        // player prefs stuff
+        float highscore = PlayerPrefs.GetFloat("HighScore");
+
+        if (score > highscore) {
+            PlayerPrefs.SetFloat("HighScore", score);
+        }
     }
 
     float getHighscore() {
-        return 0;
+        return PlayerPrefs.GetFloat("HighScore");
     }
 }
