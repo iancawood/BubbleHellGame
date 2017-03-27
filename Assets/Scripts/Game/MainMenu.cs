@@ -9,20 +9,20 @@ public class MainMenu : MonoBehaviour {
 
     // Called when play button in menu is clicked
     public void gameStart() {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        player.GetComponent<Player>().enable();
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().enable();
 
-        GameObject bubbleSpawner = GameObject.FindGameObjectWithTag("BubbleSpawner");
-        bubbleSpawner.GetComponent<BubbleSpawner>().enable();
+        GameObject.FindGameObjectWithTag("BubbleSpawner").GetComponent<BubbleSpawner>().enable();
+
+        GameObject.FindGameObjectWithTag("GameManager").GetComponent<ScoreManager>().enable();
     }
 
     // Called when player hit by bubble
     public void gameEnd() {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        player.GetComponent<Player>().disable();
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().disable();
 
-        GameObject bubbleSpawner = GameObject.FindGameObjectWithTag("BubbleSpawner");
-        bubbleSpawner.GetComponent<BubbleSpawner>().disable();
+        GameObject.FindGameObjectWithTag("BubbleSpawner").GetComponent<BubbleSpawner>().disable();
+
+        GameObject.FindGameObjectWithTag("GameManager").GetComponent<ScoreManager>().disable();
 
         GameObject[] bubbles = GameObject.FindGameObjectsWithTag("Bubble");
         for (int i = 0; i < bubbles.Length; i++) {

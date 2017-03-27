@@ -5,9 +5,10 @@ using System.Collections;
 public class ScoreManager : MonoBehaviour {
     // A manager class that handles all score related functionality as well as triggering level changes.
 
-    public Text highScoreText;
+    public Text scoreText;
+    public Text levelText;
 
-    int nextLevelUp;
+    float nextLevelUp;
     int currentLevel = 1;
 
     int LEVEL_UP = 10; // Amount of seconds between each level change
@@ -17,7 +18,7 @@ public class ScoreManager : MonoBehaviour {
     }
 
     void Update() {
-        highScoreText.text = "Score: " + scoreAsString();
+        scoreText.text = "Score: " + scoreAsString();
 
         if (score() > nextLevelUp) {
             levelUp();
@@ -33,15 +34,26 @@ public class ScoreManager : MonoBehaviour {
     }
 
     void reset() {
-        nextLevelUp = LEVEL_UP;
+        nextLevelUp = Time.time + LEVEL_UP;
         currentLevel = 1;
     }
 
-    void levelUp() {
-        Debug.Log("Level up!");
+    public void disable() {
+        scoreText.enabled = false;
+        levelText.enabled = false;
+    }
 
+    public void enable() {
+        scoreText.enabled = true;
+        levelText.enabled = true;
+        reset();
+    }
+
+    void levelUp() {
         nextLevelUp += LEVEL_UP;
         currentLevel++;
+
+        levelText.text = "Level: " + currentLevel.ToString();
 
         GameObject.FindGameObjectWithTag("PipeBuilder").SendMessage("changeTheme");
         GameObject.FindGameObjectWithTag("BubbleSpawner").SendMessage("increaseDifficulty", currentLevel);
