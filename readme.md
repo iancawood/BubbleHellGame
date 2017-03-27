@@ -26,7 +26,7 @@
 - All dependencies should be includes in the project folder.
 
 ### How To Execute
--  To run the game on Windows, go into the project folder. Find the folder path of '/build/windows/'. Run bubblehell.exe located in this folder. You need Unity installed to do this.
+-  To run the game on Windows, go into the project folder. Find the folder path of '/build/windows/'. Run bubblehell.exe located in this folder.
 -  To run the game on Web, go into the project folder. Find the folder path of '/build/web/'. Run index.html in either Firefox or Chrome. You will need WebGL installed (it should already be there) to run Unity games in browser.
 
 ### Credits:

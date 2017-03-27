@@ -30,7 +30,7 @@ public class BubbleSpawner : MonoBehaviour {
     public int initialMaxSpeed = 25;
     public float speedIncrement = 0.5f;
     [Header("Spawn Rate")]
-    public float spawnRate = 3f; // delay between bubbles spawns
+    public float initialSpawnRate = 3f; // delay between bubbles spawns
     public float maxSpawnRate = 0.05f;
     public float spawnIncrement = 0.05f;
 
@@ -63,6 +63,7 @@ public class BubbleSpawner : MonoBehaviour {
     Range pipeRange;
 
     List<BubbleType> spawnableTypes = new List<BubbleType>();
+    float spawnRate;
 
     void Start () {
         Collider collider = this.GetComponent<Collider>();
@@ -73,6 +74,8 @@ public class BubbleSpawner : MonoBehaviour {
 
         speedRange = new Range(initialMinSpeed, initialMaxSpeed);
         pipeRange = new Range(0, PipeBuilder.pipeRadius);
+
+        spawnRate = initialSpawnRate;
 
         reset();
     }
@@ -90,8 +93,11 @@ public class BubbleSpawner : MonoBehaviour {
 
     // Reset bubble spawner to initial state
     void reset() {
+        spawnableTypes = new List<BubbleType>();
         chooseSpawnableTypes(1);
         nextSpawn = 0;
+        speedRange = new Range(initialMinSpeed, initialMaxSpeed);
+        spawnRate = initialSpawnRate;
     }
 
     public void disable() {

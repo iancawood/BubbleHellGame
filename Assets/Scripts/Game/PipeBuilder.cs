@@ -7,7 +7,7 @@ public class PipeBuilder : MonoBehaviour {
     public GameObject pipeSegment;
     public Transform pipe;
 
-    int NUM_PIPES = 10; // The number of pipes to exist on screeen at a given time.
+    public int numPipes = 10; // The number of pipes to exist on screeen at a given time.
 
     public static float pipeLength;
     public static float pipeRadius;
@@ -17,7 +17,7 @@ public class PipeBuilder : MonoBehaviour {
         pipeLength = renderer.bounds.size.z;
         pipeRadius = renderer.bounds.extents.x;
 
-        for (int i = 0; i < NUM_PIPES; i++) {
+        for (int i = 0; i < numPipes; i++) {
             createPipe(new Vector3(0, 0, pipeLength * (i + 0.5f)));
         }
     }
@@ -29,7 +29,7 @@ public class PipeBuilder : MonoBehaviour {
 
     // Triggered by a destroyed pipe. Creates a new pipe to replace it.
     void replacePipe(float offset) {
-        createPipe(new Vector3(0, 0, pipeLength * (NUM_PIPES - 0.5f) + offset));
+        createPipe(new Vector3(0, 0, pipeLength * (numPipes - 0.5f) + offset));
     }
 
     void changeTheme() {

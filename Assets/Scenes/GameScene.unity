@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -253,7 +253,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 16
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 0
@@ -935,6 +935,7 @@ MonoBehaviour:
   pipeSegment: {fileID: 1752750687710266, guid: 01b29bf23e633a348bc14d1aa39dc5b7,
     type: 2}
   pipe: {fileID: 1741687648}
+  numPipes: 5
 --- !u!1 &609454839
 GameObject:
   m_ObjectHideFlags: 0
@@ -1161,34 +1162,34 @@ MonoBehaviour:
   - name: DOUBLE_SINE_BUBBLE
     type: 2
     level: 3
-    spawnChance: 20
+    spawnChance: 15
     growthRate: 3
   - name: HOMING_BUBBLE
     type: 3
-    level: 8
+    level: 6
     spawnChance: 10
     growthRate: 1
   - name: SIMPLE_CLUSTER
     type: 4
-    level: 6
+    level: 3
     spawnChance: 10
-    growthRate: 2
+    growthRate: 5
   - name: HELIX_CLUSTER
     type: 5
-    level: 10
+    level: 7
     spawnChance: 10
     growthRate: 2
   - name: EXPANDING_CLUSTER
     type: 6
-    level: 8
+    level: 5
     spawnChance: 10
     growthRate: 2
   initialMinSpeed: 5
   initialMaxSpeed: 25
   speedIncrement: 0.5
-  spawnRate: 0.7
-  maxSpawnRate: 0.05
-  spawnIncrement: 0.05
+  initialSpawnRate: 1.5
+  maxSpawnRate: 0.1
+  spawnIncrement: 0.3
 --- !u!1 &801127559
 GameObject:
   m_ObjectHideFlags: 0
@@ -1343,7 +1344,6 @@ GameObject:
   - component: {fileID: 810596465}
   - component: {fileID: 810596464}
   - component: {fileID: 810596467}
-  - component: {fileID: 810596466}
   - component: {fileID: 810596468}
   - component: {fileID: 810596469}
   m_Layer: 0
@@ -1366,7 +1366,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 515786654}
   levelText: {fileID: 906903078}
-  levelDuration: 10
+  levelDuration: 20
 --- !u!4 &810596465
 Transform:
   m_ObjectHideFlags: 0
@@ -1381,17 +1381,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &810596466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 810596463}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8c8f16d2dadfea4681559200fc02c8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &810596467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2317,7 +2306,6 @@ GameObject:
   - component: {fileID: 1330174327}
   - component: {fileID: 1330174326}
   - component: {fileID: 1330174325}
-  - component: {fileID: 1330174331}
   - component: {fileID: 1330174330}
   m_Layer: 0
   m_Name: Main Camera
@@ -2403,17 +2391,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6677c50e3c46e4c25a6991f1ddf3f156, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1330174331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1330174324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b53d385c43e1c401bbc8dcdd2356b059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1341001885
