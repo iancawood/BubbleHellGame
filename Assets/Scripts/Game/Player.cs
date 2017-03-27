@@ -1,28 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour {
-    float SPEED = 5f;
+    public float speed = 5f;
     float COLLISION_BIAS = 2f;
+	float radius;
 
-    bool canMove = false;
+	public List<Vector3> points;
+	bool canMove = false;
 
     bool vibrate;
 
     void Start() {
-
+		points.Add (new Vector3(0, 0, 10)); 
+		points.Add (new Vector3(0, 0, 10));
     }
 
     void Update() {
-        if (canMove) {
-#if UNITY_EDITOR
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0);
-
-        if ((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)) {
-            transform.position += move * SPEED * Time.deltaTime;
-        }
-#endif
-        }
+		// move in the direction of last two points
+		if(points.Count >=2 && canMove){
+			Vector3 move = points[points.Count-1] - points[points.Count-2];
+			transform.position += move * speed * Time.deltaTime;
+		}
     }
 
     // Anticipate a collision with the pipe before it happens. Doesnt work though. Need to lerp transform.position + move.
@@ -38,6 +38,24 @@ public class Player : MonoBehaviour {
             }
         }
     }
+
+	//TOUCH COMMANDS
+	public void OnTouchDown(Vector3 point){
+		points.Clear ();
+		points.Add (point);
+	}
+
+	public void OnTouchUp(Vector3 point){
+		points.Add (point);
+		//only ever want 2 points in the list for efficiency
+		if (points.Count > 2) { points.RemoveAt (0); } 
+	}
+
+	public void OnTouchHold(Vector3 point){
+		points.Add (point);
+		//only ever want 2 points in the list for efficiency
+		if (points.Count > 2) { points.RemoveAt (0); }
+	}
 
     void reset() {
         //transform.position = Vector3.zero;
