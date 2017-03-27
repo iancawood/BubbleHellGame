@@ -13,7 +13,6 @@ public class TouchManager : MonoBehaviour {
 	private void Start(){
 		Instance = this;
 		DontDestroyOnLoad (this.gameObject);
-		print (SceneManager.GetActiveScene ().name);
 	}
 
 	void Update (){
