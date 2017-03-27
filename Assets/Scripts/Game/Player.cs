@@ -18,7 +18,7 @@ public class Player : MonoBehaviour {
     }
 
     void Update() {
-		// move in the direction of last two points
+        // move in the direction of last two points
 		if(points.Count >=2 && canMove){
 			Vector3 move = points[points.Count-1] - points[points.Count-2];
 			transform.position += move * speed * Time.deltaTime;
