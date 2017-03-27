@@ -29,7 +29,7 @@ Scene setup
 	2. Attach a black image to the texture in the editor and set the fadeSpeed to an input from 0-1
 
 	Loader for Start-up Scene
-	1. Attach Load script to a gloabal object (Main Camera Usually)
+	1. Attach Load script to a global object (Main Camera Usually)
 
 	Ads by Google
 	1. Add the AdManager script to a global empty object called AdManager in the first scene - it will persist as a singleton

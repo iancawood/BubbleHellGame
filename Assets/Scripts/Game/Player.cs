@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour {
     public float speed = 5f;
+	public float pipe_diameter;
     float COLLISION_BIAS = 2f;
 	float radius;
 
@@ -15,6 +16,7 @@ public class Player : MonoBehaviour {
     void Start() {
 		points.Add (new Vector3(0, 0, 10)); 
 		points.Add (new Vector3(0, 0, 10));
+		pipe_diameter = PipeBuilder.pipeRadius * 2;
     }
 
     void Update() {
@@ -23,6 +25,7 @@ public class Player : MonoBehaviour {
 			Vector3 move = points[points.Count-1] - points[points.Count-2];
 			transform.position += move * speed * Time.deltaTime;
 		}
+		checkBounds ();
     }
 
     // Anticipate a collision with the pipe before it happens. Doesnt work though. Need to lerp transform.position + move.
@@ -81,4 +84,10 @@ public class Player : MonoBehaviour {
         float tmp = 5.0f;
         speed = tmp * x;
     }
+
+	void checkBounds() {
+		if(Vector2.SqrMagnitude(transform.position) > pipe_diameter){
+			transform.position = transform.position.normalized * Mathf.Sqrt(pipe_diameter);
+		}
+	}
 }
