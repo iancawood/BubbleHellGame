@@ -35,7 +35,7 @@ public class Player : MonoBehaviour {
     }
 
     void reset() {
-        transform.position = Vector3.zero;
+        //transform.position = Vector3.zero;
     } 
 
     public void disable() {
