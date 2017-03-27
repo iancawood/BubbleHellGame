@@ -18,7 +18,7 @@ public class TouchManager : MonoBehaviour {
 	void Update (){
 		if (!recipient) { recipient = GameObject.FindGameObjectWithTag ("Player"); }
 
-	#if UNITY_EDITOR
+	//#if UNITY_EDITOR
 		Vector3 mp = Input.mousePosition;
 		mp.z = 10;
 		Vector3 v = Camera.main.ScreenToWorldPoint (mp);
@@ -32,7 +32,7 @@ public class TouchManager : MonoBehaviour {
 				recipient.SendMessage ("OnTouchHold", v);
 			}
 		}
-	#endif
+	//#endif
 		// For mobile
 		if (Input.touchCount > 0 && recipient) {
 			foreach (Touch touch in Input.touches) {
